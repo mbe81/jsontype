@@ -1,5 +1,5 @@
 // Package jsontype provides types for handling JSON unmarshaling in scenarios where fields may be null or absent,
-// such as when processing data from PATCH requests.
+// such as when processing data from PATCH requests. The types are inspired by the sql.Null* types in the database/sql package.
 //
 // The types in this package implement the json.Unmarshaler and json.Marshaler interfaces, allowing them to seamlessly
 // integrate with Go's standard JSON handling. Each type includes a Valid field, which indicates whether the value
@@ -17,152 +17,152 @@ import (
 	"time"
 )
 
-// Bool represents a bool that may be null or may be absent.
-// Bool implements the json.Unmarshaler and can be used as a json.Unmarshal destination.
-type Bool struct {
+// NullBool represents a bool that may be null or may be absent.
+// NullBool implements the json.Unmarshaler and can be used as a json.Unmarshal destination.
+type NullBool struct {
 	Bool    bool
 	Valid   bool // Valid is true if Bool is not NULL
 	Present bool // Present is true if the field is present during Unmarshal
 }
 
 // UnmarshalJSON implements the json.Unmarshaler interface.
-func (b *Bool) UnmarshalJSON(data []byte) error {
+func (nb *NullBool) UnmarshalJSON(data []byte) error {
 	var value *bool
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
 	if value == nil {
-		b.Bool, b.Valid, b.Present = false, false, true
+		nb.Bool, nb.Valid, nb.Present = false, false, true
 		return nil
 	}
-	b.Bool, b.Valid, b.Present = *value, true, true
+	nb.Bool, nb.Valid, nb.Present = *value, true, true
 	return nil
 }
 
 // MarshalJSON implements the json.Marshaler interface.
-func (b Bool) MarshalJSON() ([]byte, error) {
-	if !b.Present || !b.Valid {
+func (nb NullBool) MarshalJSON() ([]byte, error) {
+	if !nb.Present || !nb.Valid {
 		return []byte("null"), nil
 	}
-	return json.Marshal(b.Bool)
+	return json.Marshal(nb.Bool)
 }
 
-// Float64 represents a float64 that may be null or may be absent.
-// Float64 implements the json.Unmarshaler and can be used as a json.Unmarshal destination.
-type Float64 struct {
+// NullFloat64 represents a float64 that may be null or may be absent.
+// NullFloat64 implements the json.Unmarshaler and can be used as a json.Unmarshal destination.
+type NullFloat64 struct {
 	Float64 float64
 	Valid   bool // Valid is true if Float64 is not NULL
 	Present bool // Present is true if the field is present during Unmarshal
 }
 
 // UnmarshalJSON implements the json.Unmarshaler interface.
-func (f *Float64) UnmarshalJSON(data []byte) error {
+func (nf *NullFloat64) UnmarshalJSON(data []byte) error {
 	var value *float64
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
 	if value == nil {
-		f.Float64, f.Valid, f.Present = 0, false, true
+		nf.Float64, nf.Valid, nf.Present = 0, false, true
 		return nil
 	}
-	f.Float64, f.Valid, f.Present = *value, true, true
+	nf.Float64, nf.Valid, nf.Present = *value, true, true
 	return nil
 }
 
 // MarshalJSON implements the json.Marshaler interface.
-func (f Float64) MarshalJSON() ([]byte, error) {
-	if !f.Present || !f.Valid {
+func (nf NullFloat64) MarshalJSON() ([]byte, error) {
+	if !nf.Present || !nf.Valid {
 		return []byte("null"), nil
 	}
-	return json.Marshal(f.Float64)
+	return json.Marshal(nf.Float64)
 }
 
-// Int represents an int that may be null or may be absent.
-// Int implements the json.Unmarshaler and can be used as a json.Unmarshal destination.
-type Int struct {
+// NullInt represents an int that may be null or may be absent.
+// NullInt implements the json.Unmarshaler and can be used as a json.Unmarshal destination.
+type NullInt struct {
 	Int     int
 	Valid   bool // Valid is true if Int is not NULL
 	Present bool // Present is true if the field is present during Unmarshal
 }
 
 // UnmarshalJSON implements the json.Unmarshaler interface.
-func (i *Int) UnmarshalJSON(data []byte) error {
+func (ni *NullInt) UnmarshalJSON(data []byte) error {
 	var value *int
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
 	if value == nil {
-		i.Int, i.Valid, i.Present = 0, false, true
+		ni.Int, ni.Valid, ni.Present = 0, false, true
 		return nil
 	}
-	i.Int, i.Valid, i.Present = *value, true, true
+	ni.Int, ni.Valid, ni.Present = *value, true, true
 	return nil
 }
 
 // MarshalJSON implements the json.Marshaler interface.
-func (i Int) MarshalJSON() ([]byte, error) {
-	if !i.Present || !i.Valid {
+func (ni NullInt) MarshalJSON() ([]byte, error) {
+	if !ni.Present || !ni.Valid {
 		return []byte("null"), nil
 	}
-	return json.Marshal(i.Int)
+	return json.Marshal(ni.Int)
 }
 
-// String represents a string that may be null or may be absent.
-// String implements the json.Unmarshaler and can be used as a json.Unmarshal destination.
-type String struct {
+// NullString represents a string that may be null or may be absent.
+// NullString implements the json.Unmarshaler and can be used as a json.Unmarshal destination.
+type NullString struct {
 	String  string
 	Valid   bool // Valid is true if String is not NULL
 	Present bool // Present is true if the field is present during Unmarshal
 }
 
 // UnmarshalJSON implements the json.Unmarshaler interface.
-func (s *String) UnmarshalJSON(data []byte) error {
+func (ns *NullString) UnmarshalJSON(data []byte) error {
 	var value *string
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
 	if value == nil {
-		s.String, s.Valid, s.Present = "", false, true
+		ns.String, ns.Valid, ns.Present = "", false, true
 		return nil
 	}
-	s.String, s.Valid, s.Present = *value, true, true
+	ns.String, ns.Valid, ns.Present = *value, true, true
 	return nil
 }
 
 // MarshalJSON implements the json.Marshaler interface.
-func (s String) MarshalJSON() ([]byte, error) {
-	if !s.Present || !s.Valid {
+func (ns NullString) MarshalJSON() ([]byte, error) {
+	if !ns.Present || !ns.Valid {
 		return []byte("null"), nil
 	}
-	return json.Marshal(s.String)
+	return json.Marshal(ns.String)
 }
 
-// Time represents a time.Time that may be null or may be absent.
-// Time implements the json.Unmarshaler and can be used as a json.Unmarshal destination.
-type Time struct {
+// NullTime represents a time.Time that may be null or may be absent.
+// NullTime implements the json.Unmarshaler and can be used as a json.Unmarshal destination.
+type NullTime struct {
 	Time    time.Time
-	Valid   bool // Valid is true if String is not NULL
+	Valid   bool // Valid is true if NullString is not NULL
 	Present bool // Present is true if the field is present during Unmarshal
 }
 
 // UnmarshalJSON implements the json.Unmarshaler interface.
-func (t *Time) UnmarshalJSON(data []byte) error {
+func (nt *NullTime) UnmarshalJSON(data []byte) error {
 	var value *time.Time
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
 	if value == nil {
-		t.Time, t.Valid, t.Present = time.Time{}, false, true
+		nt.Time, nt.Valid, nt.Present = time.Time{}, false, true
 		return nil
 	}
-	t.Time, t.Valid, t.Present = *value, true, true
+	nt.Time, nt.Valid, nt.Present = *value, true, true
 	return nil
 }
 
 // MarshalJSON implements the json.Marshaler interface.
-func (t Time) MarshalJSON() ([]byte, error) {
-	if !t.Present || !t.Valid {
+func (nt NullTime) MarshalJSON() ([]byte, error) {
+	if !nt.Present || !nt.Valid {
 		return []byte("null"), nil
 	}
-	return json.Marshal(t.Time)
+	return json.Marshal(nt.Time)
 }

@@ -5,84 +5,84 @@ import (
 	"time"
 )
 
-// Test the UnmarshalJSON method of Bool
-func TestBool_UnmarshalJSON(t *testing.T) {
+// Test the UnmarshalJSON method of NullBool
+func TestNullBool_UnmarshalJSON(t *testing.T) {
 	tests := []struct {
 		name      string
 		input     []byte
-		expected  Bool
+		expected  NullBool
 		expectErr bool
 	}{
 		{
 			name:      "Valid bool",
 			input:     []byte(`true`),
-			expected:  Bool{Bool: true, Valid: true, Present: true},
+			expected:  NullBool{Bool: true, Valid: true, Present: true},
 			expectErr: false,
 		},
 		{
 			name:      "Null value",
 			input:     []byte(`null`),
-			expected:  Bool{Bool: false, Valid: false, Present: true},
+			expected:  NullBool{Bool: false, Valid: false, Present: true},
 			expectErr: false,
 		},
 		{
 			name:      "Missing field",
 			input:     nil, // Simulates missing field (should not unmarshal)
-			expected:  Bool{Bool: false, Valid: false, Present: false},
+			expected:  NullBool{Bool: false, Valid: false, Present: false},
 			expectErr: true,
 		},
 		{
 			name:      "Invalid type (string)",
 			input:     []byte(`"hello"`),
-			expected:  Bool{Bool: false, Valid: false, Present: false},
+			expected:  NullBool{Bool: false, Valid: false, Present: false},
 			expectErr: true,
 		},
 		{
 			name:      "Invalid type (object)",
 			input:     []byte(`{}`),
-			expected:  Bool{Bool: false, Valid: false, Present: false},
+			expected:  NullBool{Bool: false, Valid: false, Present: false},
 			expectErr: true,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			var b Bool
-			err := b.UnmarshalJSON(tt.input)
+			var nb NullBool
+			err := nb.UnmarshalJSON(tt.input)
 			if (err != nil) != tt.expectErr {
 				t.Errorf("UnmarshalJSON() error = %v, expectErr %v", err, tt.expectErr)
 				return
 			}
-			if b != tt.expected {
-				t.Errorf("UnmarshalJSON() = %v, expected %v", b, tt.expected)
+			if nb != tt.expected {
+				t.Errorf("UnmarshalJSON() = %v, expected %v", nb, tt.expected)
 			}
 		})
 	}
 }
 
-// Test the MarshalJSON method of Bool
-func TestBool_MarshalJSON(t *testing.T) {
+// Test the MarshalJSON method of NullBool
+func TestNullBool_MarshalJSON(t *testing.T) {
 	tests := []struct {
 		name      string
-		input     Bool
+		input     NullBool
 		expected  []byte
 		expectErr bool
 	}{
 		{
 			name:      "Valid is false and Present is true",
-			input:     Bool{Bool: false, Valid: false, Present: true},
+			input:     NullBool{Bool: false, Valid: false, Present: true},
 			expected:  []byte("null"),
 			expectErr: false,
 		},
 		{
 			name:      "Both Valid and Present are true",
-			input:     Bool{Bool: true, Valid: true, Present: true},
+			input:     NullBool{Bool: true, Valid: true, Present: true},
 			expected:  []byte(`true`),
 			expectErr: false,
 		},
 		{
 			name:      "False with both Valid and Present true",
-			input:     Bool{Bool: false, Valid: true, Present: true},
+			input:     NullBool{Bool: false, Valid: true, Present: true},
 			expected:  []byte(`false`),
 			expectErr: false,
 		},
@@ -102,84 +102,84 @@ func TestBool_MarshalJSON(t *testing.T) {
 	}
 }
 
-// Test the UnmarshalJSON method of Float64
-func TestFloat64_UnmarshalJSON(t *testing.T) {
+// Test the UnmarshalJSON method of NullFloat64
+func TestNullFloat64_UnmarshalJSON(t *testing.T) {
 	tests := []struct {
 		name      string
 		input     []byte
-		expected  Float64
+		expected  NullFloat64
 		expectErr bool
 	}{
 		{
 			name:      "Valid float",
 			input:     []byte(`4.56`),
-			expected:  Float64{Float64: 4.56, Valid: true, Present: true},
+			expected:  NullFloat64{Float64: 4.56, Valid: true, Present: true},
 			expectErr: false,
 		},
 		{
 			name:      "Null value",
 			input:     []byte(`null`),
-			expected:  Float64{Float64: 0, Valid: false, Present: true},
+			expected:  NullFloat64{Float64: 0, Valid: false, Present: true},
 			expectErr: false,
 		},
 		{
 			name:      "Missing field",
 			input:     nil, // Simulates missing field (should not unmarshal)
-			expected:  Float64{Float64: 0, Valid: false, Present: false},
+			expected:  NullFloat64{Float64: 0, Valid: false, Present: false},
 			expectErr: true,
 		},
 		{
 			name:      "Invalid type (string)",
 			input:     []byte(`"hello"`),
-			expected:  Float64{Float64: 0, Valid: false, Present: false},
+			expected:  NullFloat64{Float64: 0, Valid: false, Present: false},
 			expectErr: true,
 		},
 		{
 			name:      "Invalid type (object)",
 			input:     []byte(`{}`),
-			expected:  Float64{Float64: 0, Valid: false, Present: false},
+			expected:  NullFloat64{Float64: 0, Valid: false, Present: false},
 			expectErr: true,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			var f Float64
-			err := f.UnmarshalJSON(tt.input)
+			var nf NullFloat64
+			err := nf.UnmarshalJSON(tt.input)
 			if (err != nil) != tt.expectErr {
 				t.Errorf("UnmarshalJSON() error = %v, expectErr %v", err, tt.expectErr)
 				return
 			}
-			if f != tt.expected {
-				t.Errorf("UnmarshalJSON() = %v, expected %v", f, tt.expected)
+			if nf != tt.expected {
+				t.Errorf("UnmarshalJSON() = %v, expected %v", nf, tt.expected)
 			}
 		})
 	}
 }
 
-// Test the MarshalJSON method of Float64
-func TestFloat64_MarshalJSON(t *testing.T) {
+// Test the MarshalJSON method of NullFloat64
+func TestNullFloat64_MarshalJSON(t *testing.T) {
 	tests := []struct {
 		name      string
-		input     Float64
+		input     NullFloat64
 		expected  []byte
 		expectErr bool
 	}{
 		{
 			name:      "Valid is false and Present is true",
-			input:     Float64{Float64: 0, Valid: false, Present: true},
+			input:     NullFloat64{Float64: 0, Valid: false, Present: true},
 			expected:  []byte("null"),
 			expectErr: false,
 		},
 		{
 			name:      "Both Valid and Present are true",
-			input:     Float64{Float64: 4.56, Valid: true, Present: true},
+			input:     NullFloat64{Float64: 4.56, Valid: true, Present: true},
 			expected:  []byte(`4.56`),
 			expectErr: false,
 		},
 		{
 			name:      "Zero with both Valid and Present true",
-			input:     Float64{Float64: 0, Valid: true, Present: true},
+			input:     NullFloat64{Float64: 0, Valid: true, Present: true},
 			expected:  []byte(`0`),
 			expectErr: false,
 		},
@@ -199,90 +199,90 @@ func TestFloat64_MarshalJSON(t *testing.T) {
 	}
 }
 
-// Test the UnmarshalJSON method of Int
-func TestInt_UnmarshalJSON(t *testing.T) {
+// Test the UnmarshalJSON method of NullInt
+func TestNullInt_UnmarshalJSON(t *testing.T) {
 	tests := []struct {
 		name      string
 		input     []byte
-		expected  Int
+		expected  NullInt
 		expectErr bool
 	}{
 		{
 			name:      "Valid int",
 			input:     []byte(`123`),
-			expected:  Int{Int: 123, Valid: true, Present: true},
+			expected:  NullInt{Int: 123, Valid: true, Present: true},
 			expectErr: false,
 		},
 		{
 			name:      "Null value",
 			input:     []byte(`null`),
-			expected:  Int{Int: 0, Valid: false, Present: true},
+			expected:  NullInt{Int: 0, Valid: false, Present: true},
 			expectErr: false,
 		},
 		{
 			name:      "Missing field",
 			input:     nil, // Simulates missing field (should not unmarshal)
-			expected:  Int{Int: 0, Valid: false, Present: false},
+			expected:  NullInt{Int: 0, Valid: false, Present: false},
 			expectErr: true,
 		},
 		{
 			name:      "Invalid type (string)",
 			input:     []byte(`"hello"`),
-			expected:  Int{Int: 0, Valid: false, Present: false},
+			expected:  NullInt{Int: 0, Valid: false, Present: false},
 			expectErr: true,
 		},
 		{
 			name:      "Invalid type (float)",
 			input:     []byte(`"4.56"`),
-			expected:  Int{Int: 0, Valid: false, Present: false},
+			expected:  NullInt{Int: 0, Valid: false, Present: false},
 			expectErr: true,
 		},
 		{
 			name:      "Invalid type (object)",
 			input:     []byte(`{}`),
-			expected:  Int{Int: 0, Valid: false, Present: false},
+			expected:  NullInt{Int: 0, Valid: false, Present: false},
 			expectErr: true,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			var i Int
-			err := i.UnmarshalJSON(tt.input)
+			var ni NullInt
+			err := ni.UnmarshalJSON(tt.input)
 			if (err != nil) != tt.expectErr {
 				t.Errorf("UnmarshalJSON() error = %v, expectErr %v", err, tt.expectErr)
 				return
 			}
-			if i != tt.expected {
-				t.Errorf("UnmarshalJSON() = %v, expected %v", i, tt.expected)
+			if ni != tt.expected {
+				t.Errorf("UnmarshalJSON() = %v, expected %v", ni, tt.expected)
 			}
 		})
 	}
 }
 
-// Test the MarshalJSON method of Int
-func TestInt_MarshalJSON(t *testing.T) {
+// Test the MarshalJSON method of NullInt
+func TestNullInt_MarshalJSON(t *testing.T) {
 	tests := []struct {
 		name      string
-		input     Int
+		input     NullInt
 		expected  []byte
 		expectErr bool
 	}{
 		{
 			name:      "Valid is false and Present is true",
-			input:     Int{Int: 0, Valid: false, Present: true},
+			input:     NullInt{Int: 0, Valid: false, Present: true},
 			expected:  []byte("null"),
 			expectErr: false,
 		},
 		{
 			name:      "Both Valid and Present are true",
-			input:     Int{Int: 123, Valid: true, Present: true},
+			input:     NullInt{Int: 123, Valid: true, Present: true},
 			expected:  []byte(`123`),
 			expectErr: false,
 		},
 		{
 			name:      "Zero with both Valid and Present true",
-			input:     Int{Int: 0, Valid: true, Present: true},
+			input:     NullInt{Int: 0, Valid: true, Present: true},
 			expected:  []byte(`0`),
 			expectErr: false,
 		},
@@ -302,84 +302,84 @@ func TestInt_MarshalJSON(t *testing.T) {
 	}
 }
 
-// Test the UnmarshalJSON method of String
-func TestString_UnmarshalJSON(t *testing.T) {
+// Test the UnmarshalJSON method of NullString
+func TestNullString_UnmarshalJSON(t *testing.T) {
 	tests := []struct {
 		name      string
 		input     []byte
-		expected  String
+		expected  NullString
 		expectErr bool
 	}{
 		{
 			name:      "Valid string",
 			input:     []byte(`"hello"`),
-			expected:  String{String: "hello", Valid: true, Present: true},
+			expected:  NullString{String: "hello", Valid: true, Present: true},
 			expectErr: false,
 		},
 		{
 			name:      "Null value",
 			input:     []byte(`null`),
-			expected:  String{String: "", Valid: false, Present: true},
+			expected:  NullString{String: "", Valid: false, Present: true},
 			expectErr: false,
 		},
 		{
 			name:      "Missing field",
 			input:     nil, // Simulates missing field (should not unmarshal)
-			expected:  String{String: "", Valid: false, Present: false},
+			expected:  NullString{String: "", Valid: false, Present: false},
 			expectErr: true,
 		},
 		{
 			name:      "Invalid type (number)",
 			input:     []byte(`123`),
-			expected:  String{String: "", Valid: false, Present: false},
+			expected:  NullString{String: "", Valid: false, Present: false},
 			expectErr: true,
 		},
 		{
 			name:      "Invalid type (object)",
 			input:     []byte(`{}`),
-			expected:  String{String: "", Valid: false, Present: false},
+			expected:  NullString{String: "", Valid: false, Present: false},
 			expectErr: true,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			var s String
-			err := s.UnmarshalJSON(tt.input)
+			var ns NullString
+			err := ns.UnmarshalJSON(tt.input)
 			if (err != nil) != tt.expectErr {
 				t.Errorf("UnmarshalJSON() error = %v, expectErr %v", err, tt.expectErr)
 				return
 			}
-			if s != tt.expected {
-				t.Errorf("UnmarshalJSON() = %v, expected %v", s, tt.expected)
+			if ns != tt.expected {
+				t.Errorf("UnmarshalJSON() = %v, expected %v", ns, tt.expected)
 			}
 		})
 	}
 }
 
-// Test the MarshalJSON method of String
-func TestString_MarshalJSON(t *testing.T) {
+// Test the MarshalJSON method of NullString
+func TestNullString_MarshalJSON(t *testing.T) {
 	tests := []struct {
 		name      string
-		input     String
+		input     NullString
 		expected  []byte
 		expectErr bool
 	}{
 		{
 			name:      "Valid is false and Present is true",
-			input:     String{String: "", Valid: false, Present: true},
+			input:     NullString{String: "", Valid: false, Present: true},
 			expected:  []byte("null"),
 			expectErr: false,
 		},
 		{
 			name:      "Both Valid and Present are true",
-			input:     String{String: "hello", Valid: true, Present: true},
+			input:     NullString{String: "hello", Valid: true, Present: true},
 			expected:  []byte(`"hello"`),
 			expectErr: false,
 		},
 		{
 			name:      "Empty string with both Valid and Present true",
-			input:     String{String: "", Valid: true, Present: true},
+			input:     NullString{String: "", Valid: true, Present: true},
 			expected:  []byte(`""`),
 			expectErr: false,
 		},
@@ -399,18 +399,18 @@ func TestString_MarshalJSON(t *testing.T) {
 	}
 }
 
-// Test the UnmarshalJSON method of String
-func TestTime_UnmarshalJSON(t *testing.T) {
+// Test the UnmarshalJSON method of NullTime
+func TestNullTime_UnmarshalJSON(t *testing.T) {
 	tests := []struct {
 		name      string
 		input     []byte
-		expected  Time
+		expected  NullTime
 		expectErr bool
 	}{
 		{
-			name:  "Valid string",
+			name:  "Valid time",
 			input: []byte(`"2024-01-01T00:00:00Z"`),
-			expected: Time{
+			expected: NullTime{
 				Time:    time.Date(2024, 01, 01, 00, 00, 00, 00, time.UTC),
 				Valid:   true,
 				Present: true,
@@ -420,61 +420,61 @@ func TestTime_UnmarshalJSON(t *testing.T) {
 		{
 			name:      "Null value",
 			input:     []byte(`null`),
-			expected:  Time{Time: time.Time{}, Valid: false, Present: true},
+			expected:  NullTime{Time: time.Time{}, Valid: false, Present: true},
 			expectErr: false,
 		},
 		{
 			name:      "Missing field",
 			input:     nil, // Simulates missing field (should not unmarshal)
-			expected:  Time{Time: time.Time{}, Valid: false, Present: false},
+			expected:  NullTime{Time: time.Time{}, Valid: false, Present: false},
 			expectErr: true,
 		},
 		{
 			name:      "Invalid type (number)",
 			input:     []byte(`123`),
-			expected:  Time{Time: time.Time{}, Valid: false, Present: false},
+			expected:  NullTime{Time: time.Time{}, Valid: false, Present: false},
 			expectErr: true,
 		},
 		{
 			name:      "Invalid type (object)",
 			input:     []byte(`{}`),
-			expected:  Time{Time: time.Time{}, Valid: false, Present: false},
+			expected:  NullTime{Time: time.Time{}, Valid: false, Present: false},
 			expectErr: true,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			var got Time
-			err := got.UnmarshalJSON(tt.input)
+			var nt NullTime
+			err := nt.UnmarshalJSON(tt.input)
 			if (err != nil) != tt.expectErr {
 				t.Errorf("UnmarshalJSON() error = %v, expectErr %v", err, tt.expectErr)
 				return
 			}
-			if got != tt.expected {
-				t.Errorf("UnmarshalJSON() = %v, expected %v", got, tt.expected)
+			if nt != tt.expected {
+				t.Errorf("UnmarshalJSON() = %v, expected %v", nt, tt.expected)
 			}
 		})
 	}
 }
 
-// Test the MarshalJSON method of String
-func TestTime_MarshalJSON(t *testing.T) {
+// Test the MarshalJSON method of NullTime
+func TestNullTime_MarshalJSON(t *testing.T) {
 	tests := []struct {
 		name      string
-		input     Time
+		input     NullTime
 		expected  []byte
 		expectErr bool
 	}{
 		{
 			name:      "Valid is false and Present is true",
-			input:     Time{Time: time.Time{}, Valid: false, Present: true},
+			input:     NullTime{Time: time.Time{}, Valid: false, Present: true},
 			expected:  []byte("null"),
 			expectErr: false,
 		},
 		{
 			name: "Both Valid and Present are true",
-			input: Time{
+			input: NullTime{
 				Time:    time.Date(2024, 01, 01, 00, 00, 00, 00, time.UTC),
 				Valid:   true,
 				Present: true,

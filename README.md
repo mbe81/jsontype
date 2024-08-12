@@ -4,7 +4,7 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/mbe81/jsontype)](https://goreportcard.com/report/github.com/mbe81/jsontype)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-The `jsontype` package provides some basic types for handling JSON unmarshaling in scenarios where fields may be null or absent, such as when processing data from PATCH requests.
+The `jsontype` package provides some basic types for handling JSON unmarshaling in scenarios where fields may be null or absent, such as when processing data from PATCH requests. The types are inspired by the `sql.Null*` types from the `database/sql` package.
 
 ## Overview
 
@@ -31,10 +31,10 @@ import (
 )
 
 type Person struct {
-	FirstName jsontype.String `json:"firstName"`
-	LastName  jsontype.String `json:"lastName"`
-	City      jsontype.String `json:"city"`
-	Age       jsontype.Int    `json:"age"`
+	FirstName jsontype.NullString `json:"firstName"`
+	LastName  jsontype.NullString `json:"lastName"`
+	City      jsontype.NullString `json:"city"`
+	Age       jsontype.NullInt    `json:"age"`
 }
 
 func main() {
@@ -70,15 +70,15 @@ Based on this you can say the following:
 
 Currently the following types are supported:
 
-- `jsontype.String`
-- `jsontype.Int`
-- `jsontype.Float64`
-- `jsontype.Bool`
-- `jsontype.Time`
+- `jsontype.NullString`
+- `jsontype.NullInt`
+- `jsontype.NullFloat64`
+- `jsontype.NullBool`
+- `jsontype.NullTime`
 
 ## License
 
-This package is released under the MIT license. See the [LICENSE](LICENSE) file for more information. Feel free to use it the package as is or copy the types for use in your own projects.
+This package is released under the MIT license. See the [LICENSE](LICENSE) file for more information. Feel free to use the package as is or copy the types for use in your own projects.
 
 ## Contributing
 
