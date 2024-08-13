@@ -13,9 +13,12 @@
 package jsontype
 
 import (
+	"bytes"
 	"encoding/json"
 	"time"
 )
+
+var nullLiteral = []byte("null")
 
 // NullBool represents a bool that may be null or may be absent.
 // NullBool implements the json.Unmarshaler and can be used as a json.Unmarshal destination.
@@ -27,15 +30,14 @@ type NullBool struct {
 
 // UnmarshalJSON implements the json.Unmarshaler interface.
 func (nb *NullBool) UnmarshalJSON(data []byte) error {
-	var value *bool
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	if value == nil {
+	if bytes.Equal(data, nullLiteral) {
 		nb.Bool, nb.Valid, nb.Present = false, false, true
 		return nil
 	}
-	nb.Bool, nb.Valid, nb.Present = *value, true, true
+	if err := json.Unmarshal(data, &nb.Bool); err != nil {
+		return err
+	}
+	nb.Valid, nb.Present = true, true
 	return nil
 }
 
@@ -57,15 +59,14 @@ type NullFloat64 struct {
 
 // UnmarshalJSON implements the json.Unmarshaler interface.
 func (nf *NullFloat64) UnmarshalJSON(data []byte) error {
-	var value *float64
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	if value == nil {
+	if bytes.Equal(data, nullLiteral) {
 		nf.Float64, nf.Valid, nf.Present = 0, false, true
 		return nil
 	}
-	nf.Float64, nf.Valid, nf.Present = *value, true, true
+	if err := json.Unmarshal(data, &nf.Float64); err != nil {
+		return err
+	}
+	nf.Valid, nf.Present = true, true
 	return nil
 }
 
@@ -87,15 +88,14 @@ type NullInt struct {
 
 // UnmarshalJSON implements the json.Unmarshaler interface.
 func (ni *NullInt) UnmarshalJSON(data []byte) error {
-	var value *int
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	if value == nil {
+	if bytes.Equal(data, nullLiteral) {
 		ni.Int, ni.Valid, ni.Present = 0, false, true
 		return nil
 	}
-	ni.Int, ni.Valid, ni.Present = *value, true, true
+	if err := json.Unmarshal(data, &ni.Int); err != nil {
+		return err
+	}
+	ni.Valid, ni.Present = true, true
 	return nil
 }
 
@@ -117,15 +117,14 @@ type NullString struct {
 
 // UnmarshalJSON implements the json.Unmarshaler interface.
 func (ns *NullString) UnmarshalJSON(data []byte) error {
-	var value *string
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	if value == nil {
+	if bytes.Equal(data, nullLiteral) {
 		ns.String, ns.Valid, ns.Present = "", false, true
 		return nil
 	}
-	ns.String, ns.Valid, ns.Present = *value, true, true
+	if err := json.Unmarshal(data, &ns.String); err != nil {
+		return err
+	}
+	ns.Valid, ns.Present = true, true
 	return nil
 }
 
@@ -147,15 +146,14 @@ type NullTime struct {
 
 // UnmarshalJSON implements the json.Unmarshaler interface.
 func (nt *NullTime) UnmarshalJSON(data []byte) error {
-	var value *time.Time
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	if value == nil {
+	if bytes.Equal(data, nullLiteral) {
 		nt.Time, nt.Valid, nt.Present = time.Time{}, false, true
 		return nil
 	}
-	nt.Time, nt.Valid, nt.Present = *value, true, true
+	if err := json.Unmarshal(data, &nt.Time); err != nil {
+		return err
+	}
+	nt.Valid, nt.Present = true, true
 	return nil
 }
 
