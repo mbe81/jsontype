@@ -41,7 +41,7 @@ func main() {
 	var p Person
 	err := json.Unmarshal([]byte(`{"firstName": "John", "lastName": null, "city": "New York"}`), &p)
 	if err != nil {
-		panic(err) // This examples must not fail
+		panic(err) // This example must not fail
 	}
 	fmt.Println(p)
 }
