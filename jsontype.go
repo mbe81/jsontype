@@ -164,3 +164,32 @@ func (nt NullTime) MarshalJSON() ([]byte, error) {
 	}
 	return json.Marshal(nt.Time)
 }
+
+// Null represents a generic value that may be null or may be absent.
+// Null implements the json.Unmarshaler and can be used as a json.Unmarshal destination.
+type Null[T any] struct {
+	Value   T
+	Valid   bool
+	Present bool
+}
+
+// UnmarshalJSON implements the json.Unmarshaler interface.
+func (nt *Null[T]) UnmarshalJSON(data []byte) error {
+	if string(data) == "null" {
+		nt.Present = true
+		return nil
+	}
+	if err := json.Unmarshal(data, &nt.Value); err != nil {
+		return err
+	}
+	nt.Valid, nt.Present = true, true
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaler interface.
+func (nt Null[T]) MarshalJSON() ([]byte, error) {
+	if !nt.Present || !nt.Valid {
+		return []byte("null"), nil
+	}
+	return json.Marshal(nt.Value)
+}

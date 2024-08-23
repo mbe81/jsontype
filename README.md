@@ -66,6 +66,34 @@ Based on this you can say the following:
 - `lastName` is `null` in the JSON because `LastName.Valid` is false and `LastName.Present` is true.
 - `age` is absent in the JSON because `Age.Present` is false.
 
+You could do the same with the generic `jsontype.Null[any]` type, which can be used for any type:
+```go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+
+	"github.com/mbe81/jsontype"
+)
+
+type Person struct {
+	FirstName jsontype.Null[string] `json:"firstName"`
+	LastName  jsontype.Null[string] `json:"lastName"`
+	City      jsontype.Null[string] `json:"city"`
+	Age       jsontype.Null[int]    `json:"age"`
+}
+
+func main() {
+	var p Person
+	err := json.Unmarshal([]byte(`{"firstName": "John", "lastName": null, "city": "New York"}`), &p)
+	if err != nil {
+		panic(err) // This example must not fail
+	}
+	fmt.Println(p)
+}
+```
+
 ## Supported types
 
 Currently the following types are supported:
@@ -75,6 +103,7 @@ Currently the following types are supported:
 - `jsontype.NullFloat64`
 - `jsontype.NullBool`
 - `jsontype.NullTime`
+- `jsontype.Null[any]`
 
 ## License
 
